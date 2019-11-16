@@ -1,4 +1,3 @@
-
 // APIKEY 
 // 3b7720b960e90357d6bc883a5a765ab3
 
@@ -8,6 +7,15 @@
 // example req
 // https://api.edamam.com/search?q=chicken&app_id=${YOUR_APP_ID}&app_key=${YOUR_APP_KEY}
 // &from=0&to=3&calories=591-722&health=alcohol-free
+
+$('.food-search').keypress(function (e) {
+    var key = e.which;
+    if(key == 13)  // the enter key code
+     {
+       $('.reload').click();
+       return false;  
+     }
+   }); 
 
 $(".hide").hide()
 
@@ -26,12 +34,21 @@ $(".reload").click(function(e){
         success: function (resp) {
 
             $( ".list-group-item" ).remove();
-    
-            var title = resp.hits[0].recipe.label
-            var imgUrl = resp.hits[0].recipe.image
-            var dietLabel = resp.hits[0].recipe.dietLabels[0]
-            var incredientLines = resp.hits[0].recipe.ingredientLines
-            var recipeUrl = resp.hits[0].recipe.url
+            $(".card-subtitle").show();
+            $(".recipe-link").show();
+
+            try {
+                var title = resp.hits[0].recipe.label
+                var imgUrl = resp.hits[0].recipe.image
+                var dietLabel = resp.hits[0].recipe.dietLabels[0]
+                var incredientLines = resp.hits[0].recipe.ingredientLines
+                var recipeUrl = resp.hits[0].recipe.url
+            } catch (error) {
+                $(".card-subtitle").hide();
+                $(".recipe-link").hide();
+                $(".card-title").html('Something went wrong. Try different keyword');
+                $(".card-img-top").attr("src", "error.svg");
+            }
     
             console.log("title: " + title);
             console.log("image url: " + imgUrl);
@@ -41,6 +58,7 @@ $(".reload").click(function(e){
             $(".card-title").html(title)
             $(".card-img-top").attr("src", imgUrl)
             $(".card-subtitle").html(dietLabel)
+            $(".recipe-link").html("link to recipe")
     
             function addListItem(index){
                 $( ".list-group" ).append("<li class=list-group-item> " + resp.hits[0].recipe.ingredientLines[index] + " </li>");
@@ -58,6 +76,8 @@ $(".reload").click(function(e){
         },
         error: function (req, status, err) {
             console.log('Something went wrong', status, err);
+            $(".card-title").html('Something went wrong. Try different keyword');
+            $(".card-img-top").attr("src", "error.svg");
         }
     });
 });
