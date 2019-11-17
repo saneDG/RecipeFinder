@@ -1,13 +1,3 @@
-// APIKEY 
-// 3b7720b960e90357d6bc883a5a765ab3
-
-// application ID
-// 0694a5e8
-
-// example req
-// https://api.edamam.com/search?q=chicken&app_id=${YOUR_APP_ID}&app_key=${YOUR_APP_KEY}
-// &from=0&to=3&calories=591-722&health=alcohol-free
-
 $('.food-search').keypress(function (e) {
     var key = e.which;
     if(key == 13)  // the enter key code
